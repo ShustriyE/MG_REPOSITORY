@@ -1,0 +1,25 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+}
+
+span {
+    display: block;
+}
+.wrapper {
+    height: 100%;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+}
+
+.sidebar {
+    border-right: 3px solid black;
+}
+
+.person {
+    outline: 1px solid gray;
+}
