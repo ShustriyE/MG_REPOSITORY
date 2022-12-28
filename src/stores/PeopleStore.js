@@ -1,41 +1,28 @@
-import axios from "axios";
 import { defineStore } from "pinia";
-import { watch } from 'vue'
+import SwapiPeopleService from '../services/SwapiPeopleService'
 const URL = 'https://swapi.dev/api/people/'
 
 export const usePeopleStore = defineStore('people', {
     state: () => ({
-        people:[]
+        people: null
     }),
     actions: {
         getPeople() {
-            return axios.get(URL)
-            .then(people => {
-                if(people.status === 200){
-                    const persons = people.data.results
-                    persons.sort((a, b) => a.name.localeCompare(b.name))
-                    localStorage.setItem('people', JSON.stringify(persons))
-                    this.people = JSON.parse(localStorage.getItem('people'))
-                }
-            }).catch(er => console.log(er))
+            const service = new SwapiPeopleService(URL)
+            service.getPeople()
+            this.people = JSON.parse(localStorage.getItem('people'))
         },
-        filterPeopleFilm() {
-            const people = JSON.parse(localStorage.getItem('people'))
-            people.sort((a, b) => b.films.length - a.films.length)
-            localStorage.setItem('people', JSON.stringify(people))
-            this.people = JSON.parse(localStorage.getItem('people'))            
-        },
-        filterPeopleSpecies() {
-            const people = JSON.parse(localStorage.getItem('people'))
-            people.sort((a, b) => b.species.length - a.species.length)
-            localStorage.setItem('people', JSON.stringify(people))
-            this.people = JSON.parse(localStorage.getItem('people'))    
-        },
-        filterPeopleStarships() {
-            const people = JSON.parse(localStorage.getItem('people'))
-            people.sort((a, b) => b.starships.length - a.starships.length)
-            localStorage.setItem('people', JSON.stringify(people))
+        setPeople(pople) {
+            localStorage.setItem('people', JSON.stringify(pople))
             this.people = JSON.parse(localStorage.getItem('people')) 
+        },
+        filterPeople(el) {
+            const result = el === 'film'
+            ? this.people.filter(person => person.films.length > 0)
+            : el === 'species'
+            ? this.people.filter(person => person.species.length > 0)
+            : this.people.filter(person => person.starships.length > 0)
+            this.setPeople(result) 
         },
     }
 })

@@ -1,16 +1,6 @@
 <template>
   <div class="wrapper">
-    <div class="sidebar">
-    <span>
-      <button @click="peopleStore.filterPeopleFilm()">Firter Film</button>
-    </span>
-    <span>
-      <button @click="peopleStore.filterPeopleSpecies()">Firter Species</button>
-    </span>
-    <span>
-      <button @click="peopleStore.filterPeopleStarships()">Firter Starships</button>
-    </span>
-    </div>
+    <SidebarFilters />
     <div class="maincontent">
       <People v-for="people of peopleStore.people"
       :key="people.name"
@@ -20,15 +10,12 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { usePeopleStore } from './stores/PeopleStore'
 import People from './components/People.vue'
+import SidebarFilters from './components/SidebarFilters.vue'
+import { usePeopleStore } from './stores/PeopleStore'
 
-const peopleStore = usePeopleStore()
-peopleStore.getPeople()
-
+  const peopleStore = usePeopleStore()
+  peopleStore.getPeople()
+  ? peopleStore.getPeople()
+  : []
 </script>
-
-<style scoped>
-
-</style>
